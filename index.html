@@ -1215,12 +1215,12 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
         function initializeVapi() {
             if (!vapi) {
                 // Check if Vapi SDK is loaded
-                if (!window.vapiSDK || !window.vapiSDK.default) {
+                if (!window.Vapi) {
                     console.error('Vapi SDK not loaded');
                     throw new Error('Vapi SDK not loaded. Please refresh the page.');
                 }
-                
-                vapi = window.vapiSDK.default(VAPI_API_KEY);
+
+                vapi = new window.Vapi(VAPI_API_KEY);
                 console.log('✅ Vapi initialized');
 
                 // Event listeners
@@ -1430,37 +1430,7 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
         }
     </script>
     
-    <!-- Vapi SDK Stub for Testing -->
-    <script>
-        // Simple Vapi stub - replace with real SDK later
-        window.vapiSDK = {
-            default: function(apiKey) {
-                console.log('Vapi stub initialized with key:', apiKey ? 'present' : 'missing');
-                return {
-                    start: function(assistantId) {
-                        console.log('Stub: Call started with assistant:', assistantId);
-                        this.emit('call-start');
-                        return Promise.resolve();
-                    },
-                    stop: function() {
-                        console.log('Stub: Call stopped');
-                        this.emit('call-end');
-                    },
-                    on: function(event, callback) {
-                        if (!this.listeners) this.listeners = {};
-                        if (!this.listeners[event]) this.listeners[event] = [];
-                        this.listeners[event].push(callback);
-                    },
-                    emit: function(event, data) {
-                        if (this.listeners && this.listeners[event]) {
-                            this.listeners[event].forEach(cb => cb(data));
-                        }
-                    },
-                    listeners: {}
-                };
-            }
-        };
-        console.log('✅ Vapi stub loaded');
-    </script>
+    <!-- Vapi Web SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web/dist/vapi.iife.js"></script>
 </body>
 </html>
