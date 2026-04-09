@@ -591,13 +591,13 @@
                         </p>
                     </div>
                     <div>
-                        <label class="section-label" style="font-size: 0.75rem;">Vapi API Key</label>
+                        <label class="section-label" style="font-size: 0.75rem;">Vapi Public Key</label>
                         <input type="password" id="vapiKeyInput" class="input-field"
                                placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                value=""
                                style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.5rem; font-family: var(--font-body); font-size: 0.9rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
                         <p style="font-size: 0.75rem; opacity: 0.5; margin-top: 0.4rem;">
-                            Get free key at <a href="https://dashboard.vapi.ai" target="_blank" style="color: var(--electric-mint);">dashboard.vapi.ai</a>
+                            Use your <strong style="color:var(--electric-mint)">Public Key</strong> from <a href="https://dashboard.vapi.ai" target="_blank" style="color: var(--electric-mint);">dashboard.vapi.ai</a>
                         </p>
                     </div>
                 </div>
@@ -1109,52 +1109,44 @@
         async function generateVoiceAgent() {
             if (!parsedMenu) return;
 
-            // Validate Vapi API key
+            // Validate Vapi public key
             if (!VAPI_API_KEY) {
-                alert('Please enter your Vapi API key in the API Keys section on the upload screen.\n\nGet your free API key at:\nhttps://dashboard.vapi.ai');
+                alert('Please enter your Vapi Public Key in the API Keys section on the upload screen.\n\nFind it at: dashboard.vapi.ai → Account → Public Key');
                 showScreen('menuScreen');
                 document.getElementById('apiKeysPanel').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
 
             try {
-                // Show loading state
                 const btn = event.target;
                 btn.disabled = true;
-                btn.textContent = 'Creating Agent...';
+                btn.textContent = 'Preparing Agent...';
 
-                // Create Vapi assistant with parsed menu
-                const assistant = await createVapiAssistant(parsedMenu);
-                vapiAssistantId = assistant.id;
-
-                // Initialize Vapi Web SDK
+                // Pre-load the Vapi SDK now so the call starts instantly later
                 await initializeVapi();
 
                 // Populate menu knowledge display
                 populateMenuKnowledge(parsedMenu);
 
-                btn.textContent = 'Agent Created! ✓';
+                btn.textContent = 'Agent Ready! ✓';
                 setTimeout(() => {
                     showScreen('voiceScreen');
                 }, 800);
 
             } catch (error) {
-                console.error('Error creating voice agent:', error);
-                alert('Error creating voice agent: ' + error.message);
+                console.error('Error preparing voice agent:', error);
+                alert('Error preparing voice agent: ' + error.message);
                 event.target.disabled = false;
                 event.target.textContent = 'Generate Voice Agent & Get Number →';
             }
         }
 
-        // Create Vapi Assistant
-        async function createVapiAssistant(menuData) {
-            // Build menu context for the AI
-            const menuContext = menuData.items.map(item => 
+        // Build inline assistant config from parsed menu
+        function buildAssistantConfig(menuData) {
+            const menuContext = menuData.items.map(item =>
                 `${item.name} - ${item.price}${item.description ? ': ' + item.description : ''}`
             ).join('\n');
-
             const restaurantName = menuData.restaurantName || 'the restaurant';
-
             const systemPrompt = `You are a friendly AI phone agent for ${restaurantName}. Your job is to help customers order food from the menu.
 
 MENU:
@@ -1171,44 +1163,18 @@ INSTRUCTIONS:
 
 Keep responses concise and friendly. You're here to make ordering easy and pleasant.`;
 
-            const payload = {
-                name: `${restaurantName} - Voice Agent`,
+            return {
+                transcriber: { provider: "deepgram", model: "nova-2", language: "en-US" },
                 model: {
                     provider: "openai",
                     model: "gpt-4o-mini",
-                    messages: [
-                        {
-                            role: "system",
-                            content: systemPrompt
-                        }
-                    ],
+                    messages: [{ role: "system", content: systemPrompt }],
                     temperature: 0.7
                 },
-                voice: {
-                    provider: "openai",
-                    voiceId: "alloy"
-                },
+                voice: { provider: "openai", voiceId: "alloy" },
                 firstMessage: `Hi! Welcome to ${restaurantName}. I'd be happy to help you order. What can I get for you today?`,
-                endCallMessage: "Thanks for your order! Have a great day!",
-                recordingEnabled: false,
-                hipaaEnabled: false
+                endCallMessage: "Thanks for your order! Have a great day!"
             };
-
-            const response = await fetch('https://api.vapi.ai/assistant', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${VAPI_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to create assistant');
-            }
-
-            return await response.json();
         }
 
         // Initialize Vapi Web SDK
@@ -1283,25 +1249,25 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
 
         // Toggle Vapi Call
         async function toggleVapiCall() {
-            if (!vapi || !vapiAssistantId) {
-                alert('Voice agent not initialized. Please try again.');
+            if (!vapi) {
+                alert('Voice agent not initialized. Please go back and try again.');
                 return;
             }
 
             const isActive = document.getElementById('callInterface').classList.contains('call-active');
 
             if (!isActive) {
-                // Start call
                 try {
                     updateCallStatus('connecting', 'Connecting...');
-                    await vapi.start(vapiAssistantId);
+                    const config = buildAssistantConfig(parsedMenu);
+                    await vapi.start(config);
                 } catch (error) {
                     console.error('Error starting call:', error);
-                    alert('Failed to start call: ' + error.message);
+                    const msg = error?.message || JSON.stringify(error) || 'Unknown error';
+                    alert('Failed to start call: ' + msg);
                     updateCallStatus('idle', 'Ready to start');
                 }
             } else {
-                // End call
                 vapi.stop();
             }
         }
