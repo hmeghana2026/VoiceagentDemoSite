@@ -1214,10 +1214,14 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
         // Initialize Vapi Web SDK
         async function initializeVapi() {
             if (!vapi) {
-                if (!window.Vapi) {
+                if (typeof window.Vapi !== 'function') {
                     try {
-                        const mod = await import('https://cdn.jsdelivr.net/npm/@vapi-ai/web/+esm');
-                        window.Vapi = mod.default || mod.Vapi || mod;
+                        const mod = await import('https://esm.sh/@vapi-ai/web');
+                        const VapiClass = typeof mod.default === 'function' ? mod.default
+                                        : typeof mod.Vapi === 'function' ? mod.Vapi
+                                        : null;
+                        if (!VapiClass) throw new Error('Could not find Vapi constructor in SDK module');
+                        window.Vapi = VapiClass;
                     } catch (e) {
                         throw new Error('Failed to load Vapi SDK: ' + e.message);
                     }
