@@ -572,7 +572,41 @@
                 <span class="glitch-text" data-text="Upload Menu">Upload Menu</span>
             </h2>
             <div class="accent-line"></div>
-            
+
+            <!-- API Keys Panel -->
+            <div id="apiKeysPanel" class="card" style="margin-bottom: 2.5rem; border-color: var(--border-glow);">
+                <span class="section-label">API Keys Required</span>
+                <p style="opacity: 0.7; margin: 0.75rem 0 1.25rem; font-size: 0.95rem;">
+                    Your keys are stored only in your browser (localStorage) and never sent to any server other than the respective APIs.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="section-label" style="font-size: 0.75rem;">Gemini API Key</label>
+                        <input type="password" id="geminiKeyInput" class="input-field"
+                               placeholder="AIza..."
+                               value=""
+                               style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.5rem; font-family: var(--font-body); font-size: 0.9rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
+                        <p style="font-size: 0.75rem; opacity: 0.5; margin-top: 0.4rem;">
+                            Get free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--electric-mint);">aistudio.google.com</a>
+                        </p>
+                    </div>
+                    <div>
+                        <label class="section-label" style="font-size: 0.75rem;">Vapi API Key</label>
+                        <input type="password" id="vapiKeyInput" class="input-field"
+                               placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                               value=""
+                               style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.5rem; font-family: var(--font-body); font-size: 0.9rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
+                        <p style="font-size: 0.75rem; opacity: 0.5; margin-top: 0.4rem;">
+                            Get free key at <a href="https://dashboard.vapi.ai" target="_blank" style="color: var(--electric-mint);">dashboard.vapi.ai</a>
+                        </p>
+                    </div>
+                </div>
+                <button class="copy-btn" onclick="saveApiKeys()" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                    Save Keys
+                </button>
+                <span id="keysSavedMsg" style="display: none; margin-left: 1rem; color: var(--electric-mint); font-size: 0.9rem;">Keys saved!</span>
+            </div>
+
             <div class="split-layout">
                 <div>
                     <!-- Combined Upload/Preview Zone -->
@@ -808,8 +842,9 @@
         4. Create a new key and paste it below
         */
 
-        const GEMINI_API_KEY = 'AIzaSyDDdN70XNq5HJQLZcoNIZnRgnFWwhtOPR8'; // REPLACE WITH YOUR ACTUAL KEY
-        const VAPI_API_KEY = 'edc19cc3-3958-474f-b050-7742cccf7220'; // REPLACE WITH YOUR VAPI KEY
+        // API keys are loaded from localStorage (entered by the user via the settings panel)
+        let GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || '';
+        let VAPI_API_KEY = localStorage.getItem('vapi_api_key') || '';
         
         // Global Variables
         let uploadedFile = null;
@@ -829,7 +864,29 @@
             }
         });
 
+        function saveApiKeys() {
+            const geminiKey = document.getElementById('geminiKeyInput').value.trim();
+            const vapiKey = document.getElementById('vapiKeyInput').value.trim();
+            if (geminiKey) {
+                localStorage.setItem('gemini_api_key', geminiKey);
+                GEMINI_API_KEY = geminiKey;
+            }
+            if (vapiKey) {
+                localStorage.setItem('vapi_api_key', vapiKey);
+                VAPI_API_KEY = vapiKey;
+            }
+            const msg = document.getElementById('keysSavedMsg');
+            msg.style.display = 'inline';
+            setTimeout(() => { msg.style.display = 'none'; }, 2500);
+        }
+
         function initializeApp() {
+            // Pre-populate API key inputs from localStorage
+            const savedGemini = localStorage.getItem('gemini_api_key') || '';
+            const savedVapi = localStorage.getItem('vapi_api_key') || '';
+            if (savedGemini) document.getElementById('geminiKeyInput').value = savedGemini;
+            if (savedVapi) document.getElementById('vapiKeyInput').value = savedVapi;
+
             // Custom Cursor Movement
             const cursor = document.querySelector('.cursor');
             const cursorFollower = document.querySelector('.cursor-follower');
@@ -983,8 +1040,9 @@
             if (!uploadedFile) return;
 
             // Validate API key
-            if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_API_KEY_HERE') {
-                alert('Please configure your Gemini API key in the script section.\n\nGet your free API key at:\nhttps://aistudio.google.com/app/apikey');
+            if (!GEMINI_API_KEY) {
+                alert('Please enter your Gemini API key in the API Keys section above.\n\nGet your free API key at:\nhttps://aistudio.google.com/app/apikey');
+                document.getElementById('apiKeysPanel').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
 
@@ -1052,8 +1110,10 @@
             if (!parsedMenu) return;
 
             // Validate Vapi API key
-            if (!VAPI_API_KEY || VAPI_API_KEY === 'YOUR_VAPI_API_KEY_HERE') {
-                alert('Please configure your Vapi API key in the script section.\n\nGet your free API key at:\nhttps://dashboard.vapi.ai');
+            if (!VAPI_API_KEY) {
+                alert('Please enter your Vapi API key in the API Keys section on the upload screen.\n\nGet your free API key at:\nhttps://dashboard.vapi.ai');
+                showScreen('menuScreen');
+                document.getElementById('apiKeysPanel').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
 
