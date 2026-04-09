@@ -1185,8 +1185,8 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
                     temperature: 0.7
                 },
                 voice: {
-                    provider: "11labs",
-                    voiceId: "paula" // Friendly female voice
+                    provider: "openai",
+                    voiceId: "alloy"
                 },
                 firstMessage: `Hi! Welcome to ${restaurantName}. I'd be happy to help you order. What can I get for you today?`,
                 endCallMessage: "Thanks for your order! Have a great day!",
@@ -1268,7 +1268,15 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
 
                 vapi.on('error', (error) => {
                     console.error('❌ Vapi error:', error);
-                    alert('Call error: ' + error.message);
+                    const msg = typeof error === 'string' ? error
+                               : error?.message || error?.errorMsg
+                               || (error?.error?.message) || JSON.stringify(error);
+                    alert('Call error: ' + msg + '\n\nOpen browser console (F12) for full details.');
+                    updateCallStatus('idle', 'Ready to start');
+                    document.getElementById('waveformContainer').style.display = 'none';
+                    document.getElementById('callInterface').classList.remove('call-active');
+                    document.getElementById('vapiCallBtn').textContent = '🎤 Start Voice Call';
+                    document.getElementById('vapiCallBtn').classList.remove('end-call');
                 });
             }
         }
