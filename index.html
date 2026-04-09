@@ -1128,7 +1128,7 @@
                 vapiAssistantId = assistant.id;
 
                 // Initialize Vapi Web SDK
-                initializeVapi();
+                await initializeVapi();
 
                 // Populate menu knowledge display
                 populateMenuKnowledge(parsedMenu);
@@ -1212,12 +1212,15 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
         }
 
         // Initialize Vapi Web SDK
-        function initializeVapi() {
+        async function initializeVapi() {
             if (!vapi) {
-                // Check if Vapi SDK is loaded
                 if (!window.Vapi) {
-                    console.error('Vapi SDK not loaded');
-                    throw new Error('Vapi SDK not loaded. Please refresh the page.');
+                    try {
+                        const mod = await import('https://cdn.jsdelivr.net/npm/@vapi-ai/web/+esm');
+                        window.Vapi = mod.default || mod.Vapi || mod;
+                    } catch (e) {
+                        throw new Error('Failed to load Vapi SDK: ' + e.message);
+                    }
                 }
 
                 vapi = new window.Vapi(VAPI_API_KEY);
@@ -1430,7 +1433,5 @@ Keep responses concise and friendly. You're here to make ordering easy and pleas
         }
     </script>
     
-    <!-- Vapi Web SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web/dist/vapi.iife.js"></script>
 </body>
 </html>
