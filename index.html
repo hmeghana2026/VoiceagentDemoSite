@@ -255,7 +255,7 @@
         /* File Upload Dropzone */
         .dropzone {
             border: 3px dashed var(--border-glow);
-            padding: 3rem 2rem;
+            padding: 1.2rem 2rem;
             text-align: center;
             transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
             background: var(--ghost-white);
@@ -274,8 +274,8 @@
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
             color: var(--electric-mint);
         }
 
@@ -330,9 +330,9 @@
         .phone-display {
             background: var(--ghost-white);
             border: 3px solid var(--electric-mint);
-            padding: 3rem 2rem;
+            padding: 1rem 2rem;
             text-align: center;
-            margin: 2rem 0;
+            margin: 0.5rem 0;
             position: relative;
         }
 
@@ -376,8 +376,8 @@
         .card {
             background: var(--ghost-white);
             border: 2px solid var(--border-glow);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            margin-bottom: 0.8rem;
             position: relative;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
@@ -538,6 +538,28 @@
         .mb-2 { margin-bottom: 2rem; }
         .mb-3 { margin-bottom: 3rem; }
         .text-center { text-align: center; }
+
+        /* === FIT-TO-SCREEN: Pages 2–5 — no page scroll === */
+        #menuScreen, #previewScreen, #voiceScreen, #bookScreen {
+            min-height: unset;
+            height: 100vh;
+            overflow: hidden;
+            padding: 1.2rem 2rem;
+        }
+
+        #menuScreen .accent-line,
+        #previewScreen .accent-line,
+        #voiceScreen .accent-line,
+        #bookScreen .accent-line {
+            margin: 0.4rem 0 0.8rem;
+        }
+
+        #menuScreen .hero-title,
+        #previewScreen .hero-title,
+        #voiceScreen .hero-title,
+        #bookScreen .hero-title {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -566,141 +588,101 @@
 
     <!-- Menu Upload Screen -->
     <div id="menuScreen" class="screen">
-        <div class="container">
+        <div class="container" style="max-width: 800px;">
             <span class="section-label">Step 01 / Upload Menu</span>
-            <h2 class="hero-title" style="font-size: clamp(2rem, 5vw, 4rem);">
+            <h2 class="hero-title" style="font-size: clamp(1.5rem, 3.5vw, 2.5rem);">
                 <span class="glitch-text" data-text="Upload Menu">Upload Menu</span>
             </h2>
             <div class="accent-line"></div>
 
             <!-- API Keys Panel -->
-            <div id="apiKeysPanel" class="card" style="margin-bottom: 2.5rem; border-color: var(--border-glow);">
+            <div id="apiKeysPanel" class="card" style="margin-bottom: 1rem; border-color: var(--border-glow);">
                 <span class="section-label">API Keys Required</span>
-                <p style="opacity: 0.7; margin: 0.75rem 0 1.25rem; font-size: 0.95rem;">
-                    Your keys are stored only in your browser (localStorage) and never sent to any server other than the respective APIs.
-                </p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.6rem 0 0.75rem;">
                     <div>
-                        <label class="section-label" style="font-size: 0.75rem;">Gemini API Key</label>
+                        <label class="section-label" style="font-size: 0.7rem;">Gemini API Key</label>
                         <input type="password" id="geminiKeyInput" class="input-field"
                                placeholder="AIza..."
                                value=""
-                               style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.5rem; font-family: var(--font-body); font-size: 0.9rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
-                        <p style="font-size: 0.75rem; opacity: 0.5; margin-top: 0.4rem;">
-                            Get free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--electric-mint);">aistudio.google.com</a>
+                               style="width: 100%; padding: 0.5rem 0.75rem; margin-top: 0.3rem; font-family: var(--font-body); font-size: 0.85rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
+                        <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 0.25rem;">
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--electric-mint);">aistudio.google.com</a>
                         </p>
                     </div>
                     <div>
-                        <label class="section-label" style="font-size: 0.75rem;">Vapi Public Key</label>
+                        <label class="section-label" style="font-size: 0.7rem;">Vapi Public Key</label>
                         <input type="password" id="vapiKeyInput" class="input-field"
                                placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                value=""
-                               style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.5rem; font-family: var(--font-body); font-size: 0.9rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
-                        <p style="font-size: 0.75rem; opacity: 0.5; margin-top: 0.4rem;">
-                            Use your <strong style="color:var(--electric-mint)">Public Key</strong> from <a href="https://dashboard.vapi.ai" target="_blank" style="color: var(--electric-mint);">dashboard.vapi.ai</a>
+                               style="width: 100%; padding: 0.5rem 0.75rem; margin-top: 0.3rem; font-family: var(--font-body); font-size: 0.85rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); outline: none; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
+                        <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 0.25rem;">
+                            <a href="https://dashboard.vapi.ai" target="_blank" style="color: var(--electric-mint);">dashboard.vapi.ai</a>
                         </p>
                     </div>
                 </div>
-                <button class="copy-btn" onclick="saveApiKeys()" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                <button class="copy-btn" onclick="saveApiKeys()" style="padding: 0.4rem 1.2rem; font-size: 0.85rem;">
                     Save Keys
                 </button>
-                <span id="keysSavedMsg" style="display: none; margin-left: 1rem; color: var(--electric-mint); font-size: 0.9rem;">Keys saved!</span>
+                <span id="keysSavedMsg" style="display: none; margin-left: 1rem; color: var(--electric-mint); font-size: 0.85rem;">Keys saved!</span>
             </div>
 
-            <div class="split-layout">
-                <div>
-                    <!-- Combined Upload/Preview Zone -->
-                    <div id="uploadContainer">
-                        <!-- Dropzone (shown initially, hidden after upload) -->
-                        <div class="dropzone" id="dropzone" onclick="document.getElementById('menuInput').click()">
-                            <div class="upload-icon">📄</div>
-                            <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem;">
-                                Drop your menu here
-                            </h3>
-                            <p style="opacity: 0.7; margin-bottom: 1rem;">or click to browse</p>
-                            <input type="file" id="menuInput" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileUpload(event)">
-                            <p style="font-size: 0.85rem; opacity: 0.5;">Supports PDF, JPEG, PNG up to 10MB</p>
-                        </div>
-
-                        <!-- File Preview (replaces dropzone after upload) -->
-                        <div class="file-preview" id="filePreview">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <div>
-                                    <span class="section-label">Selected File</span>
-                                    <p id="fileName" style="font-size: 1.1rem; margin-top: 0.5rem;"></p>
-                                </div>
-                                <button class="copy-btn" onclick="removeFile()" style="padding: 0.5rem 1rem;">
-                                    Remove
-                                </button>
-                            </div>
-                            <div id="imagePreview" style="display: none; margin-bottom: 1rem; border: 2px solid var(--border-glow); padding: 1rem; text-align: center;">
-                                <img id="previewImg" style="max-width: 100%; max-height: 400px; display: inline-block;" alt="Menu preview">
-                            </div>
-                            <div id="processingStatus" style="display: none; text-align: center; padding: 2rem 0;">
-                                <div class="spinner"></div>
-                                <p class="loading-text">Processing your menu...</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="liquid-btn mt-3" id="processBtn" onclick="processMenuPDF()" disabled>
-                        Process Menu & Generate Agent
-                    </button>
+            <!-- Upload Zone (full width) -->
+            <div id="uploadContainer">
+                <!-- Dropzone (shown initially, hidden after upload) -->
+                <div class="dropzone" id="dropzone" onclick="document.getElementById('menuInput').click()">
+                    <div class="upload-icon">📄</div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.3rem;">
+                        Drop your menu here
+                    </h3>
+                    <p style="opacity: 0.7; margin-bottom: 0.5rem; font-size: 0.9rem;">or click to browse</p>
+                    <input type="file" id="menuInput" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileUpload(event)">
+                    <p style="font-size: 0.8rem; opacity: 0.5;">Supports PDF, JPEG, PNG up to 10MB</p>
                 </div>
 
-                <div>
-                    <div class="card">
-                        <div style="display: flex; flex-direction: column; gap: 2rem; padding: 1rem 0;">
-                            <!-- Step 1 -->
-                            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                                <div style="min-width: 50px; height: 50px; border: 2px solid var(--electric-mint); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--electric-mint);">
-                                    1
-                                </div>
-                                <div style="flex: 1; height: 2px; background: var(--border-glow);"></div>
-                                <div style="font-size: 1rem; opacity: 0.9;">Upload Menu</div>
-                            </div>
-                            
-                            <!-- Step 2 -->
-                            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                                <div style="min-width: 50px; height: 50px; border: 2px solid var(--neon-rose); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--neon-rose);">
-                                    2
-                                </div>
-                                <div style="flex: 1; height: 2px; background: var(--border-glow);"></div>
-                                <div style="font-size: 1rem; opacity: 0.9;">Magic</div>
-                            </div>
-                            
-                            <!-- Step 3 -->
-                            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                                <div style="min-width: 50px; height: 50px; border: 2px solid var(--electric-mint); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--electric-mint);">
-                                    3
-                                </div>
-                                <div style="flex: 1; height: 2px; background: var(--border-glow);"></div>
-                                <div style="font-size: 1rem; opacity: 0.9;">Agent Ready</div>
-                            </div>
+                <!-- File Preview (replaces dropzone after upload) -->
+                <div class="file-preview" id="filePreview">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <div>
+                            <span class="section-label">Selected File</span>
+                            <p id="fileName" style="font-size: 1rem; margin-top: 0.25rem;"></p>
                         </div>
+                        <button class="copy-btn" onclick="removeFile()" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+                            Remove
+                        </button>
+                    </div>
+                    <div id="imagePreview" style="display: none; margin-bottom: 0.75rem; border: 2px solid var(--border-glow); padding: 0.75rem; text-align: center;">
+                        <img id="previewImg" style="max-width: 100%; max-height: 160px; display: inline-block;" alt="Menu preview">
+                    </div>
+                    <div id="processingStatus" style="display: none; text-align: center; padding: 1rem 0;">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Processing your menu...</p>
                     </div>
                 </div>
             </div>
+
+            <button class="liquid-btn mt-2" id="processBtn" onclick="processMenuPDF()" disabled>
+                Process Menu & Generate Agent
+            </button>
         </div>
     </div>
 
     <!-- Menu Preview Screen -->
     <div id="previewScreen" class="screen">
-        <div class="container" style="max-width: 900px;">
+        <div class="container" style="max-width: 900px; display: flex; flex-direction: column; height: 100%;">
             <span class="section-label">Step 02 / Review Parsed Menu</span>
-            <h2 class="hero-title" style="font-size: clamp(2rem, 5vw, 4rem);">
+            <h2 class="hero-title" style="font-size: clamp(1.5rem, 3.5vw, 2.5rem);">
                 <span class="glitch-text" data-text="Your Menu">Your Menu</span>
             </h2>
             <div class="accent-line"></div>
 
-            <div id="restaurantNameDisplay" style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 2rem; color: var(--electric-mint);"></div>
+            <div id="restaurantNameDisplay" style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.75rem; color: var(--electric-mint);"></div>
 
-            <div class="card" style="margin-bottom: 2rem;">
+            <div class="card" style="flex: 1; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 0.75rem;">
                 <span class="section-label">Extracted Items</span>
-                <div id="parsedMenuItems" style="margin-top: 1rem;"></div>
+                <div id="parsedMenuItems" style="margin-top: 0.75rem; flex: 1; overflow-y: auto;"></div>
             </div>
 
-            <div class="text-center mt-3">
+            <div class="text-center mt-1">
                 <button class="liquid-btn" onclick="generateVoiceAgent()">
                     Generate Voice Agent & Get Number →
                 </button>
@@ -712,67 +694,64 @@
     <div id="voiceScreen" class="screen">
         <div class="container" style="max-width: 900px;">
             <span class="section-label">Step 03 / Test Your Agent</span>
-            <h2 class="hero-title" style="font-size: clamp(2rem, 5vw, 4rem);">
+            <h2 class="hero-title" style="font-size: clamp(1.5rem, 3.5vw, 2.5rem);">
                 <span class="glitch-text" data-text="Live Demo">Live Demo</span>
             </h2>
             <div class="accent-line"></div>
 
             <!-- Call Interface -->
             <div class="phone-display" id="callInterface">
-                <div class="status-indicator" style="justify-content: center;" id="callStatus">
+                <div class="status-indicator" style="justify-content: center; margin: 0.5rem 0;" id="callStatus">
                     <span class="status-dot" id="statusDot"></span>
                     <span id="statusText">Ready to start</span>
                 </div>
-                
-                <div style="margin: 2rem 0;">
-                    <div id="waveformContainer" style="display: none; margin: 2rem 0;">
-                        <!-- Waveform Animation -->
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 6px; height: 80px;">
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                        </div>
+
+                <div id="waveformContainer" style="display: none; margin: 0.5rem 0;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 6px; height: 50px;">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
                     </div>
-                    
-                    <p style="font-size: 1.1rem; opacity: 0.8; margin: 1rem 0; max-width: 500px; margin-left: auto; margin-right: auto;">
-                        Click below to start a voice call with your AI agent. Speak naturally to test how it handles orders from your menu.
-                    </p>
                 </div>
-                
-                <button class="liquid-btn" id="vapiCallBtn" onclick="toggleVapiCall()">
+
+                <p style="font-size: 0.95rem; opacity: 0.8; margin: 0.5rem 0; max-width: 500px; margin-left: auto; margin-right: auto;">
+                    Click below to start a voice call with your AI agent. Speak naturally to test how it handles orders from your menu.
+                </p>
+
+                <button class="liquid-btn" id="vapiCallBtn" onclick="toggleVapiCall()" style="margin: 0.5rem 0;">
                     🎤 Start Voice Call
                 </button>
 
-                <p style="font-size: 0.9rem; opacity: 0.5; margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
-                    <strong>Tip:</strong> Allow microphone access when prompted. The AI knows your entire menu and can take orders naturally.
+                <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 0.5rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                    <strong>Tip:</strong> Allow microphone access when prompted.
                 </p>
             </div>
 
             <!-- Menu Reference Card -->
-            <div class="split-layout mt-3" style="grid-template-columns: 1fr 1fr;">
+            <div class="split-layout mt-1" style="grid-template-columns: 1fr 1fr;">
                 <div class="card">
                     <span class="section-label">Try asking</span>
-                    <ul class="instructions-list" style="list-style: none; padding-left: 0;">
-                        <li>"What's on the menu?"</li>
-                        <li>"I'd like to order..."</li>
-                        <li>"What do you recommend?"</li>
+                    <ul class="instructions-list" style="list-style: none; padding-left: 0; margin: 0.5rem 0 0;">
+                        <li style="margin-bottom: 0.4rem;">"What's on the menu?"</li>
+                        <li style="margin-bottom: 0.4rem;">"I'd like to order..."</li>
+                        <li style="margin-bottom: 0.4rem;">"What do you recommend?"</li>
                         <li>"Tell me about the specials"</li>
                     </ul>
                 </div>
 
                 <div class="card">
                     <span class="section-label">Your Agent Knows</span>
-                    <div id="menuKnowledge" style="margin-top: 1rem; max-height: 200px; overflow-y: auto;">
+                    <div id="menuKnowledge" style="margin-top: 0.5rem; max-height: 120px; overflow-y: auto;">
                         <!-- Will be populated with menu items -->
                     </div>
                 </div>
             </div>
 
-            <div class="text-center mt-3">
+            <div class="text-center mt-1">
                 <button class="liquid-btn liquid-btn-secondary" onclick="showScreen('bookScreen')">
                     Want This For Your Restaurant? →
                 </button>
@@ -784,37 +763,37 @@
     <div id="bookScreen" class="screen">
         <div class="container" style="max-width: 600px;">
             <span class="section-label">Step 04 / Get Started</span>
-            <h2 class="hero-title" style="font-size: clamp(2rem, 5vw, 4rem);">
+            <h2 class="hero-title" style="font-size: clamp(1.5rem, 3.5vw, 2.5rem);">
                 <span class="glitch-text" data-text="Let's Talk">Let's Talk</span>
             </h2>
             <div class="accent-line"></div>
 
-            <p class="subtitle mb-3">
+            <p class="subtitle" style="font-size: 1rem; margin-bottom: 1.5rem;">
                 Ready to implement this for your restaurant? Share your details and we'll set up a personalized demo.
             </p>
 
-            <div style="margin-bottom: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
                 <label class="section-label">Restaurant Name</label>
-                <input type="text" id="restaurantName" class="input-field" 
+                <input type="text" id="restaurantName" class="input-field"
                        placeholder="Your restaurant name"
-                       style="width: 100%; padding: 1rem 1.5rem; font-family: var(--font-body); font-size: 1rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); outline: none;">
+                       style="width: 100%; padding: 0.75rem 1.2rem; font-family: var(--font-body); font-size: 1rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); outline: none;">
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
                 <label class="section-label">Email Address</label>
-                <input type="email" id="email" class="input-field" 
+                <input type="email" id="email" class="input-field"
                        placeholder="your.email@restaurant.com"
-                       style="width: 100%; padding: 1rem 1.5rem; font-family: var(--font-body); font-size: 1rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); outline: none;">
+                       style="width: 100%; padding: 0.75rem 1.2rem; font-family: var(--font-body); font-size: 1rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); outline: none;">
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
                 <label class="section-label">Phone Number</label>
-                <input type="tel" id="phone" class="input-field" 
+                <input type="tel" id="phone" class="input-field"
                        placeholder="+1 (555) 000-0000"
-                       style="width: 100%; padding: 1rem 1.5rem; font-family: var(--font-body); font-size: 1rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); outline: none;">
+                       style="width: 100%; padding: 0.75rem 1.2rem; font-family: var(--font-body); font-size: 1rem; background: var(--ghost-white); border: 2px solid var(--border-glow); color: var(--ash-white); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); outline: none;">
             </div>
 
-            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                 <button class="liquid-btn" onclick="submitDemo()" style="flex: 1;">
                     Book a Call
                 </button>
